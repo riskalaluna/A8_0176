@@ -10,6 +10,13 @@ data class AllMahasiswaResponse (
 )
 
 @Serializable
+data class MahasiswaDetailResponse (
+    val status: Boolean,
+    val message: String,
+    val data: Mahasiswa
+)
+
+@Serializable
 data class Mahasiswa(
     val id_mahasiswa: String,
     val nama_mahasiswa: String,
