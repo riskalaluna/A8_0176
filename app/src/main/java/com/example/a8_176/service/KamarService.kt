@@ -24,7 +24,7 @@ interface KamarService {
 
     //@GET("baca1kamar.php/{id_kamar}")
     @GET("{id_kamar}")
-    suspend fun getKamarbyId(@Path("iid_kamar") id_kamar: String): KamarDetailResponse
+    suspend fun getKamarbyId(@Path("id_kamar") id_kamar: String): KamarDetailResponse
 
     @POST("store")
     suspend fun insertKamar(@Body kamar: Kamar)
