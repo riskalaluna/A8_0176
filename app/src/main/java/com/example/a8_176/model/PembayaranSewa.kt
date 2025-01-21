@@ -4,6 +4,20 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class AllPembayaransewaResponse (
+    val status: Boolean,
+    val message: String,
+    val data: List<PembayaranSewa>
+)
+
+@Serializable
+data class PembayaransewaDetailResponse (
+    val status: Boolean,
+    val message: String,
+    val data: PembayaranSewa
+)
+
+@Serializable
 data class PembayaranSewa(
     val id_pembayaran: String,
     val id_mahasiswa: String,
