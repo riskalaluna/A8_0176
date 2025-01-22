@@ -47,4 +47,19 @@ class HomeMahasiswaViewModel(private val mhs: MahasiswaRepository): ViewModel() 
             }
         }
     }
+
+    fun deleteMhs(id_mahasiswa: String) {
+        viewModelScope.launch {
+            try {
+                mhs.deleteMahasiswa(id_mahasiswa)
+                snackbarMessage = "Mahasiswa berhasil dihapus"
+            } catch (e: IOException) {
+                snackbarMessage = "Network error: ${e.message}"
+                mhsUIState = HomeUiState.Error
+            } catch (e: HttpException) {
+                snackbarMessage = "HTTP error: ${e.message}"
+                mhsUIState = HomeUiState.Error
+            }
+        }
+    }
 }
