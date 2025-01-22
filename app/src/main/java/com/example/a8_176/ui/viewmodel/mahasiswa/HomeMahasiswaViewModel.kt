@@ -25,4 +25,26 @@ class HomeMahasiswaViewModel(private val mhs: MahasiswaRepository): ViewModel() 
     var snackbarMessage: String? by mutableStateOf(null)
         private set
 
+    init {
+        getMhs()
+    }
+
+    fun getMhs() {
+        viewModelScope.launch {
+            isRefreshing = true
+            mhsUIState = try {
+                HomeUiState.Succsess(mhs.getMahasiswa())
+            }catch (e: IOException) {
+                HomeUiState.Error
+                snackbarMessage = "Network error: ${e.message}"
+                HomeUiState.Error
+            }catch (e: HttpException) {
+                HomeUiState.Error
+                snackbarMessage = "HTTP error: ${e.message}"
+                HomeUiState.Error
+            } finally {
+                isRefreshing = false
+            }
+        }
+    }
 }
