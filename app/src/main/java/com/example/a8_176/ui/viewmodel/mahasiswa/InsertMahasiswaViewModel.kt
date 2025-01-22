@@ -1,6 +1,32 @@
 package com.example.a8_176.ui.viewmodel.mahasiswa
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.a8_176.model.Mahasiswa
+import com.example.a8_176.repository.MahasiswaRepository
+import kotlinx.coroutines.launch
+
+class InsertMahasiswaViewModel(private val mhs: MahasiswaRepository): ViewModel() {
+    var uiState by mutableStateOf(InsertUiState())
+        private set
+
+    fun updateInsertMhsState(insertUiEvent: InsertUiEvent){
+        uiState = InsertUiState(insertUiEvent = insertUiEvent)
+    }
+
+    fun insertMhs() {
+        viewModelScope.launch {
+            try {
+                mhs.insertMahasiswa(uiState.insertUiEvent.toMhs())
+            } catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+}
 
 data class InsertUiState(
     val insertUiEvent: InsertUiEvent = InsertUiEvent()
@@ -34,3 +60,4 @@ fun Mahasiswa.toInsertUiEvent(): InsertUiEvent = InsertUiEvent(
     nomor_telepon = nomor_telepon,
     id_kamar = id_kamar
 )
+
