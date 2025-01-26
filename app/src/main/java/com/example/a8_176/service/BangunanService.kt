@@ -13,27 +13,27 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface BangunanService {
+
     @Headers(
         "Accept: application/json",
-        "Content-Type: application/json",
+        "Content-Type: application/json"
     )
 
-    //@GET("bacabangunan.php")
-    @GET(".")
+    @GET("bangunan")
     suspend fun getAllBangunan(): AllBangunanResponse
 
-    //@GET("baca1bangunan.php/{id_bangunan}")
-    @GET("{id_bangunan}")
+    @GET("bangunan/{id_bangunan}")
     suspend fun getBangunanbyId(@Path("id_bangunan") id_bangunan: String): BangunanDetailResponse
 
-    @POST("store")
+    @POST("bangunan/store")
     suspend fun insertBangunan(@Body bangunan: Bangunan)
 
-    //@PUT("editbangunan.php/{id_bangunan}")
-    @PUT("{id_bangunan}")
-    suspend fun updateBangunan(@Path("id_bangunan") id_bangunan: String, @Body bangunan: Bangunan)
+    @PUT("bangunan/{id_bangunan}")
+    suspend fun updateBangunan(
+        @Path("id_bangunan") id_bangunan: String,
+        @Body bangunan: Bangunan
+    ): Response<Bangunan>  // Pastikan response sesuai dengan yang diharapkan
 
-    //@DELETE("deletebangunan.php/{id_bangunan}")
-    @DELETE("{id_bangunan}")
-    suspend fun deleteBangunan (@Path("id_bangunan") id_bangunan: String): Response<Void>
+    @DELETE("bangunan/{id_bangunan}")
+    suspend fun deleteBangunan(@Path("id_bangunan") id_bangunan: String): Response<Void>
 }
