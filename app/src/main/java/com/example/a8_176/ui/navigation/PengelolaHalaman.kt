@@ -117,6 +117,21 @@ fun PengelolaHalaman(
                 )
             }
         }
+        composable(
+            "${DestinasiUpdateBgn.route}/{id_bangunan}",
+            arguments = listOf(
+                navArgument("id_bangunan") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val id_bangunan = backStackEntry.arguments?.getString("id_bangunan")
+            id_bangunan?.let { id_bangunan ->
+                UpdateBgnScreen(
+                    onBack = {
+                        navController.navigate(DestinasiHomeBgn.route) },
+                    onNavigate = { navController.navigate(DestinasiHomeBgn.route) },
+                )
+            }
+        }
     }
 }
 
