@@ -74,10 +74,11 @@ fun HomeBgnScreen(
         topBar = {
             CustumeTopAppBar(
                 title = DestinasiHomeBgn.titleRes,
-                canNavigateBack = false,
+                canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
                 modifier = modifier,
-                onRefresh = { viewModel.getBgn() }
+                onRefresh = { viewModel.getBgn() },
+                navigateUp = { onBack() },
             )
         },
         floatingActionButton = {
