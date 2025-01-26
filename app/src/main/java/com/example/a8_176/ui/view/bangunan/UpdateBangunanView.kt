@@ -18,6 +18,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+object DestinasiUpdateBgn: DestinasiNavigasi {
+    override val route = "updatebgn"
+    override val titleRes = "Update Data Bangunan"
+    const val id_bangunan = "id_bangunan"
+    val routeWithArgs = "$route/{$id_bangunan}"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateBgnScreen(
