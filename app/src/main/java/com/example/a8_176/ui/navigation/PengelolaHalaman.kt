@@ -87,6 +87,15 @@ fun PengelolaHalaman(
                 },
             )
         }
+        composable(DestinasiEntryBgn.route) {
+            EntryBgnScreen(navigateBack = {
+                navController.navigate(DestinasiHomeBgn.route) {
+                    popUpTo(DestinasiHomeBgn.route) {
+                        inclusive = true
+                    }
+                }
+            })
+        }
     }
 }
 
