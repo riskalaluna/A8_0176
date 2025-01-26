@@ -33,6 +33,13 @@ import com.example.a8_176.ui.navigation.DestinasiNavigasi
 import com.example.a8_176.ui.viewmodel.PenyediaViewModel
 import com.example.a8_176.ui.viewmodel.bangunan.DetailBangunanViewModel
 
+object DestinasiDetailBgn : DestinasiNavigasi {
+    override val route = "detail/{id_bangunan}"
+    override val titleRes = "Detail Bangunan"
+    const val id_bangunan = "id_bangunan"
+    val routeWithArgs = "$route/{$id_bangunan}"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailBgnScreen(
