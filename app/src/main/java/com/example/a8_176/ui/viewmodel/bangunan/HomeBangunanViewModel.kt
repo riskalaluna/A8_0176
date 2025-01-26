@@ -49,5 +49,17 @@ class HomeBangunanViewModel(
             }
         }
     }
+
+    fun deleteBgn(id_bangunan: String) {
+        viewModelScope.launch {
+            try {
+                bgn.deleteBangunan(id_bangunan)
+            } catch (e: IOException) {
+                HomeBgnUiState.Error
+            } catch (e: HttpException) {
+                HomeBgnUiState.Error
+            }
+        }
+    }
 }
 
