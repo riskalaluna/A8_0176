@@ -15,26 +15,24 @@ import retrofit2.http.Path
 interface KamarService {
     @Headers(
         "Accept: application/json",
-        "Content-Type: application/json",
+        "Content-Type: application/json"
     )
 
-    //@GET("bacakamar.php")
-    @GET(".")
+    @GET("kamar")
     suspend fun getAllKamar(): AllKamarResponse
 
-    //@GET("baca1kamar.php/{id_kamar}")
-    @GET("{id_kamar}")
+    @GET("kamar/{id_kamar}")
     suspend fun getKamarbyId(@Path("id_kamar") id_kamar: String): KamarDetailResponse
 
-    @POST("store")
+    @POST("kamar/store")
     suspend fun insertKamar(@Body kamar: Kamar)
 
-    //@PUT("editkamar.php/{id_kamar}")
-    @PUT("{id_kamar}")
-    suspend fun updateKamar(@Path("id_kamar") id_kamar: String, @Body kamar: Kamar)
+    @PUT("kamar/{id_kamar}")
+    suspend fun updateKamar(
+        @Path("id_kamar") id_kamar: String,
+        @Body kamar: Kamar
+    ): Response<Kamar>
 
-    //@DELETE("deletekamar.php/{id_kamar}")
-    @DELETE("{id_kamar}")
-    suspend fun deleteKamar (@Path("id_kamar") id_kamar: String): Response<Void>
-
+    @DELETE("kamar/{id_kamar}")
+    suspend fun deleteKamar(@Path("id_kamar") id_kamar: String): Response<Void>
 }
