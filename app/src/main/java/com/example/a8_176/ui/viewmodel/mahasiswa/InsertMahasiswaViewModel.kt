@@ -5,33 +5,58 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.a8_176.model.Bangunan
+import com.example.a8_176.model.Kamar
 import com.example.a8_176.model.Mahasiswa
+import com.example.a8_176.repository.KamarRepository
 import com.example.a8_176.repository.MahasiswaRepository
+import com.example.a8_176.ui.viewmodel.kamar.InsertKmrUiEvent
+import com.example.a8_176.ui.viewmodel.kamar.InsertKmrUiState
+import com.example.a8_176.ui.viewmodel.kamar.toInsertKmrUiEvent
+import com.example.a8_176.ui.viewmodel.kamar.toKmr
 import kotlinx.coroutines.launch
 
-class InsertMahasiswaViewModel(private val mhs: MahasiswaRepository): ViewModel() {
-    var uiState by mutableStateOf(InsertUiState())
+class InsertMahasiswaViewModel(
+    private val mhs: MahasiswaRepository,
+    private val kmr: KamarRepository
+): ViewModel() {
+    var uiStateMhs by mutableStateOf(InsertMhsUiState())
         private set
 
-    fun updateInsertMhsState(insertUiEvent: InsertUiEvent){
-        uiState = InsertUiState(insertUiEvent = insertUiEvent)
+    fun updateInsertMhsState(insertMhsUiEvent: InsertMhsUiEvent) {
+        uiStateMhs = uiStateMhs.copy(insertMhsUiEvent = insertMhsUiEvent)
+    }
+    init {
+        loadKamar()
+    }
+
+    private fun loadKamar() {
+        viewModelScope.launch {
+            try {
+                val kamarList = kmr.getKamar()
+                uiStateMhs = uiStateMhs.copy(idkamarList = kamarList)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun insertMhs() {
         viewModelScope.launch {
             try {
-                mhs.insertMahasiswa(uiState.insertUiEvent.toMhs())
-            } catch (e:Exception){
+                mhs.insertMahasiswa(uiStateMhs.insertMhsUiEvent.toMhs())
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 }
 
-data class InsertUiState(
-    val insertUiEvent: InsertUiEvent = InsertUiEvent()
+data class InsertMhsUiState(
+    val insertMhsUiEvent: InsertMhsUiEvent = InsertMhsUiEvent(),
+    val idkamarList: List<Kamar> = emptyList()
 )
-data class InsertUiEvent(
+data class InsertMhsUiEvent(
     val id_mahasiswa: String = "",
     val nama_mahasiswa: String = "",
     val nomor_identitas: String = "",
@@ -40,7 +65,7 @@ data class InsertUiEvent(
     val id_kamar: String = "",
 )
 
-fun InsertUiEvent.toMhs(): Mahasiswa = Mahasiswa(
+fun InsertMhsUiEvent.toMhs(): Mahasiswa = Mahasiswa(
     id_mahasiswa = id_mahasiswa,
     nama_mahasiswa = nama_mahasiswa,
     nomor_identitas = nomor_identitas,
@@ -49,10 +74,11 @@ fun InsertUiEvent.toMhs(): Mahasiswa = Mahasiswa(
     id_kamar = id_kamar
 )
 
-fun Mahasiswa.toUiStateMhs(): InsertUiState = InsertUiState(
-    insertUiEvent = toInsertUiEvent()
+fun Mahasiswa.toMhsUiState(): InsertMhsUiState = InsertMhsUiState(
+    insertMhsUiEvent = toInsertMhsUiEvent()
 )
-fun Mahasiswa.toInsertUiEvent(): InsertUiEvent = InsertUiEvent(
+
+fun Mahasiswa.toInsertMhsUiEvent(): InsertMhsUiEvent = InsertMhsUiEvent(
     id_mahasiswa = id_mahasiswa,
     nama_mahasiswa = nama_mahasiswa,
     nomor_identitas = nomor_identitas,
