@@ -32,7 +32,7 @@ interface BangunanService {
     suspend fun updateBangunan(
         @Path("id_bangunan") id_bangunan: String,
         @Body bangunan: Bangunan
-    ): Response<Bangunan>  // Pastikan response sesuai dengan yang diharapkan
+    ): Response<Bangunan>
 
     @DELETE("bangunan/{id_bangunan}")
     suspend fun deleteBangunan(@Path("id_bangunan") id_bangunan: String): Response<Void>
