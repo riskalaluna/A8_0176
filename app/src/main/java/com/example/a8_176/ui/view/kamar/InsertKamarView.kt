@@ -38,6 +38,11 @@ import com.example.a8_176.ui.viewmodel.kamar.InsertKmrUiEvent
 import com.example.a8_176.ui.viewmodel.kamar.InsertKmrUiState
 import kotlinx.coroutines.launch
 
+object DestinasiEntryKmr : DestinasiNavigasi {
+    override val route = "item_entry_kmr"
+    override val titleRes = "Tambah Data Kamar"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EntryKmrScreen(
