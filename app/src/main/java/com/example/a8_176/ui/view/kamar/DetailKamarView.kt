@@ -37,6 +37,13 @@ import com.example.a8_176.ui.navigation.DestinasiNavigasi
 import com.example.a8_176.ui.viewmodel.PenyediaViewModel
 import com.example.a8_176.ui.viewmodel.kamar.DetailKamarViewModel
 
+object DestinasiDetailKmr : DestinasiNavigasi {
+    override val route = "detail/{id_kamar}"
+    override val titleRes = "Detail Kamar"
+    const val id_kamar = "id_kamar"
+    val routeWithArgs = "$route/{$id_kamar}"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailKmrScreen(
