@@ -23,6 +23,7 @@ class UpdateMahasiswaViewModel(
     savedStateHandle: SavedStateHandle,
     private val repositoryMahasiswa: MahasiswaRepository,
     private val repositoryKamar: KamarRepository
+    //menambahkan repositoryKamar ke Mahasiswa viewmodel (salah commit file)
 ) : ViewModel() {
     var idkamarList by mutableStateOf<List<Kamar>>(emptyList())
         private set
