@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -33,10 +34,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a8_176.R
 import com.example.a8_176.model.Mahasiswa
@@ -46,17 +50,18 @@ import com.example.a8_176.ui.viewmodel.PenyediaViewModel
 import com.example.a8_176.ui.viewmodel.mahasiswa.HomeMahasiswaViewModel
 import com.example.a8_176.ui.viewmodel.mahasiswa.HomeUiState
 
-object DestinasiHome : DestinasiNavigasi {
-    override val route = "home"
+object DestinasiHomeMhs : DestinasiNavigasi {
+    override val route = "homemhs"
     override val titleRes = "Home Mahasiswa"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun HomeMhsScreen(
     navigateToItemEntry: () -> Unit,
     modifier: Modifier = Modifier,
     onDetailClick: (String) -> Unit = {},
+    onBack: () -> Unit = { },
     viewModel: HomeMahasiswaViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -64,27 +69,33 @@ fun HomeScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CustumeTopAppBar(
-                title = DestinasiHome.titleRes,
-                canNavigateBack = false,
+                title = DestinasiHomeMhs.titleRes,
+                canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
+                modifier = modifier,
                 onRefresh = {
                     viewModel.getMhs()
-                }
+                },
+                navigateUp = { onBack() },
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
+                containerColor = Color(0xFF42A5F5),
                 modifier = Modifier.padding(18.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add Kontak")
+                    contentDescription = "Add Mahasiswa",
+                    tint = Color.White
+                )
+
             }
         },
     ){ innerPadding ->
-        HomeStatus(
+        HomeStatusMhs(
             homeUiState = viewModel.mhsUIState,
             retryAction = { viewModel.getMhs() }, modifier = Modifier.padding(innerPadding),
             onDetailClick = onDetailClick, onDeleteClick = {
@@ -96,7 +107,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeStatus(
+fun HomeStatusMhs(
     homeUiState: HomeUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
@@ -178,7 +189,6 @@ fun OnError(
     }
 }
 
-
 @Composable
 fun MhsLayout(
     mahasiswa: List<Mahasiswa>,
@@ -212,7 +222,10 @@ fun MhsCard(
     onDeleteClick: (Mahasiswa) -> Unit = {}
 ) {
     Card (
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD)),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ){
@@ -224,8 +237,16 @@ fun MhsCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ){
+                Icon(
+                    imageVector = Icons.Filled.Person,
+                    contentDescription = "",
+                    tint = Color(0xFF1976D2)
+                )
                 Text(
                     text = mahasiswa.nama_mahasiswa,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    color = Color(0xFF1976D2),
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(modifier.weight(1f))
@@ -237,15 +258,24 @@ fun MhsCard(
                 }
                 Text(
                     text = mahasiswa.id_mahasiswa,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    color = Color(0xFF1976D2),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
             Text(
-                text = mahasiswa.nomor_telepon,
+                text = mahasiswa.id_kamar,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = Color(0xFF1976D2),
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = mahasiswa.id_kamar,
+                text = mahasiswa.nomor_telepon,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = Color(0xFF1976D2),
                 style = MaterialTheme.typography.titleMedium
             )
         }
