@@ -1,10 +1,15 @@
 package com.example.a8_176.ui.view.pembayaransewa
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +40,38 @@ import com.example.a8_176.ui.custumwidget.DropDownAsrama
 import com.example.a8_176.ui.viewmodel.pembayaransewa.InsertPsUiEvent
 import com.example.a8_176.ui.viewmodel.pembayaransewa.InsertPsUiState
 import kotlinx.coroutines.launch
+
+@Composable
+fun EntryBodyPs(
+    insertPsUiEvent: InsertPsUiEvent = InsertPsUiEvent(),
+    insertPsUiState: InsertPsUiState = InsertPsUiState(),
+    onValueChange: (InsertPsUiEvent) -> Unit,
+    onSavedClick: () -> Unit,
+    uiState: InsertPsUiState,
+    modifier: Modifier = Modifier,
+    idmahasiswaList: List<Mahasiswa>,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+        modifier = modifier.padding(12.dp)
+    ) {
+        FormInputPs(
+            insertPsUiEvent = insertPsUiState.insertPsUiEvent,
+            onValueChange = onValueChange,
+            modifier = Modifier.fillMaxWidth(),
+            idmahasiswaList = idmahasiswaList
+        )
+        Button(
+            onClick = onSavedClick,
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF42A5F5),
+                contentColor = Color.White)
+        ) {
+            Text(text = "Simpan")
+        }
+    }
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
