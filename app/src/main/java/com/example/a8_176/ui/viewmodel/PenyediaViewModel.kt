@@ -18,6 +18,11 @@ import com.example.a8_176.ui.viewmodel.mahasiswa.DetailMahasiswaViewModel
 import com.example.a8_176.ui.viewmodel.mahasiswa.HomeMahasiswaViewModel
 import com.example.a8_176.ui.viewmodel.mahasiswa.InsertMahasiswaViewModel
 import com.example.a8_176.ui.viewmodel.mahasiswa.UpdateMahasiswaViewModel
+import com.example.a8_176.ui.viewmodel.pembayaransewa.DetailPembayaranSewaViewModel
+import com.example.a8_176.ui.viewmodel.pembayaransewa.HomePembayaranSewaViewModel
+import com.example.a8_176.ui.viewmodel.pembayaransewa.InsertPembayaranSewaViewModel
+import com.example.a8_176.ui.viewmodel.pembayaransewa.UpdatePembayaranSewaViewModel
+
 
 object PenyediaViewModel{
     val Factory = viewModelFactory {
@@ -49,6 +54,18 @@ object PenyediaViewModel{
         initializer { UpdateMahasiswaViewModel(createSavedStateHandle(),
             aplikasiKontak().container.kontakMhsRepository,
             aplikasiKontak().container.kontakKmrRepository
+        ) }
+
+        //Pembayaran Sewa
+        initializer { HomePembayaranSewaViewModel(aplikasiKontak().container.kontakPsRepository) }
+        initializer { InsertPembayaranSewaViewModel(
+            aplikasiKontak().container.kontakPsRepository,
+            aplikasiKontak().container.kontakMhsRepository
+        ) }
+        initializer { DetailPembayaranSewaViewModel(aplikasiKontak().container.kontakPsRepository) }
+        initializer { UpdatePembayaranSewaViewModel(createSavedStateHandle(),
+            aplikasiKontak().container.kontakPsRepository,
+            aplikasiKontak().container.kontakMhsRepository
         ) }
     }
 }
