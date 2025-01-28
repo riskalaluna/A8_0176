@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class InsertMahasiswaViewModel(
     private val mhs: MahasiswaRepository,
-    private val kmr: KamarRepository
+    private val kmr: KamarRepository //mengambil KamarRepository (salah commit file)
 ): ViewModel() {
     var uiStateMhs by mutableStateOf(InsertMhsUiState())
         private set
