@@ -7,13 +7,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a8_176.model.Bangunan
+import com.example.a8_176.repository.BangunanRepository
 import com.example.a8_176.repository.KamarRepository
 import com.example.a8_176.ui.view.kamar.DestinasiUpdateKmr
 import kotlinx.coroutines.launch
 
 class UpdateKamarViewModel(
     savedStateHandle: SavedStateHandle,
-    private val repositoryKamar: KamarRepository
+    private val repositoryKamar: KamarRepository,
+    private val repositoryBangunan: BangunanRepository
 ) : ViewModel() {
 
     // State untuk daftar bangunan
