@@ -8,16 +8,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -51,7 +54,7 @@ fun EntryBgnScreen(
                 title = DestinasiEntryBgn.titleRes,
                 canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
-                navigateUp = navigateBack
+                navigateUp = navigateBack,
             )
         }
     ) { innerPadding ->
@@ -60,8 +63,8 @@ fun EntryBgnScreen(
             onBangunanValueChange = viewModel::updateInsertBgnState,
             onSavedClick = {
                 coroutineScope.launch {
-                    viewModel.insertBgn() // Menyimpan data
-                    navigateBack() // Kembali ke halaman sebelumnya setelah simpan
+                    viewModel.insertBgn()
+                    navigateBack()
                 }
             },
             modifier = Modifier
@@ -91,7 +94,8 @@ fun EntryBodyBgn(
         Button(
             onClick = onSavedClick,
             shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF42A5F5), contentColor = Color.White)
         ) {
             Text(text = "Simpan")
         }
@@ -108,15 +112,24 @@ fun FormInput(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        val inputFieldColors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Color(0xFF42A5F5), // Warna border saat fokus
+            unfocusedBorderColor = Color(0xFF90CAF9), // Warna border saat tidak fokus
+            cursorColor = Color(0xFF42A5F5), // Warna kursor
+            focusedLabelColor = Color(0xFF42A5F5), // Warna label saat fokus
+            unfocusedLabelColor = Color(0xFF1976D2) // Warna label saat tidak fokus
+        )
+
         OutlinedTextField(
             value = insertBgnUiEvent.id_bangunan,
             onValueChange = {onValueChange(insertBgnUiEvent.copy(id_bangunan = it))},
             label = { Text("ID Bangunan") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            colors = inputFieldColors
         )
         OutlinedTextField(
             value = insertBgnUiEvent.nama_bangunan,
@@ -124,7 +137,8 @@ fun FormInput(
             label = { Text("Nama Bangunan") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            colors = inputFieldColors
         )
         OutlinedTextField(
             value = insertBgnUiEvent.jumlah_lantai,
@@ -132,7 +146,8 @@ fun FormInput(
             label = { Text("Jumlah Lantai") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            colors = inputFieldColors
         )
         OutlinedTextField(
             value = insertBgnUiEvent.alamat,
@@ -140,17 +155,19 @@ fun FormInput(
             label = { Text("Alamat") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            colors = inputFieldColors
         )
         if(enabled) {
             Text("Isi Semua Data!",
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier.padding(12.dp),
+                color = Color.Red
             )
         }
         Divider(
             thickness = 8.dp,
+            color = Color.LightGray,
             modifier = Modifier.padding(12.dp)
         )
     }
 }
-
