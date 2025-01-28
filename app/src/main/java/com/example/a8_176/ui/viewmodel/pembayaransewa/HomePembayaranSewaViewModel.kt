@@ -51,4 +51,16 @@ class HomePembayaranSewaViewModel(
             }
         }
     }
+
+    fun deletePs(id_pembayaran: String) {
+        viewModelScope.launch {
+            try {
+                ps.deletePembayaransewa(id_pembayaran)
+            } catch (e: IOException) {
+                HomePsUiState.Error
+            } catch (e: HttpException) {
+                HomePsUiState.Error
+            }
+        }
+    }
 }
