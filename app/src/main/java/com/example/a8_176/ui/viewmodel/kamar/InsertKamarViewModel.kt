@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a8_176.model.Bangunan
 import com.example.a8_176.model.Kamar
+import com.example.a8_176.repository.BangunanRepository
 import com.example.a8_176.repository.KamarRepository
 import kotlinx.coroutines.launch
 
 class InsertKamarViewModel(
-    private val kmr: KamarRepository
+    private val kmr: KamarRepository,
+    private val bgn: BangunanRepository
 ) : ViewModel() {
     var uiStateKamar by mutableStateOf(InsertKmrUiState())
         private set
