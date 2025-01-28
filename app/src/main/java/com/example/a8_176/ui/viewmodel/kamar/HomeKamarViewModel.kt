@@ -49,4 +49,16 @@ class HomeKamarViewModel(
             }
         }
     }
+
+    fun deleteKmr(id_kamar: String) {
+        viewModelScope.launch {
+            try {
+                kmr.deleteKamar(id_kamar)
+            } catch (e: IOException) {
+                HomeKmrUiState.Error
+            } catch (e: HttpException) {
+                HomeKmrUiState.Error
+            }
+        }
+    }
 }
