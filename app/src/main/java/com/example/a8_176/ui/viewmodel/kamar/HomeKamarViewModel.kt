@@ -26,4 +26,27 @@ class HomeKamarViewModel(
         private set
     var snackbarMessage: String? by mutableStateOf(null)
         private set
+
+    init {
+        getKmr()
+    }
+
+    fun getKmr() {
+        viewModelScope.launch {
+            isRefreshing = true
+            kmrUIState = try {
+                HomeKmrUiState.Succsess(kmr.getKamar())
+            }catch (e: IOException) {
+                HomeKmrUiState.Error
+                snackbarMessage = "Network error: ${e.message}"
+                HomeKmrUiState.Error
+            }catch (e: HttpException) {
+                HomeKmrUiState.Error
+                snackbarMessage = "HTTP error: ${e.message}"
+                HomeKmrUiState.Error
+            } finally {
+                isRefreshing = false
+            }
+        }
+    }
 }
