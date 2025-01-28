@@ -31,9 +31,52 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a8_176.model.Bangunan
 import com.example.a8_176.ui.custumwidget.CustumeTopAppBar
 import com.example.a8_176.ui.custumwidget.DropDownAsrama
+import com.example.a8_176.ui.navigation.DestinasiNavigasi
+import com.example.a8_176.ui.viewmodel.PenyediaViewModel
+import com.example.a8_176.ui.viewmodel.kamar.InsertKamarViewModel
 import com.example.a8_176.ui.viewmodel.kamar.InsertKmrUiEvent
 import com.example.a8_176.ui.viewmodel.kamar.InsertKmrUiState
 import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EntryKmrScreen(
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: InsertKamarViewModel = viewModel(factory = PenyediaViewModel.Factory)
+) {
+    val uiStateKamar = viewModel.uiStateKamar
+    val coroutineScope = rememberCoroutineScope()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    Scaffold (
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            CustumeTopAppBar(
+                title = DestinasiEntryKmr.titleRes,
+                canNavigateBack = true,
+                scrollBehavior = scrollBehavior,
+                navigateUp = navigateBack
+            )
+        }
+    ) { innerPadding ->
+        EntryBodyKmr(
+            uiState = uiStateKamar,
+            idbangunanList = uiStateKamar.idbangunanList,
+            insertKmrUiState = viewModel.uiStateKamar,
+            onKamarValueChange = viewModel::updateInsertKmrState,
+            onSavedClick = {
+                coroutineScope.launch {
+                    viewModel.insertKmr()
+                    navigateBack()
+                }
+            },
+            modifier = Modifier
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
+        )
+    }
+}
 
 @Composable
 fun EntryBodyKmr(
