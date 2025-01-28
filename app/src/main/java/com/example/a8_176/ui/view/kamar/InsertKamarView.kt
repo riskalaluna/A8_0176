@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +34,38 @@ import com.example.a8_176.ui.custumwidget.DropDownAsrama
 import com.example.a8_176.ui.viewmodel.kamar.InsertKmrUiEvent
 import com.example.a8_176.ui.viewmodel.kamar.InsertKmrUiState
 import kotlinx.coroutines.launch
+
+@Composable
+fun EntryBodyKmr(
+    insertKmrUiEvent: InsertKmrUiEvent = InsertKmrUiEvent(),
+    insertKmrUiState: InsertKmrUiState = InsertKmrUiState(),
+    onKamarValueChange: (InsertKmrUiEvent) -> Unit,
+    onSavedClick: () -> Unit,
+    uiState: InsertKmrUiState,
+    modifier: Modifier = Modifier,
+    idbangunanList: List<Bangunan>,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+        modifier = modifier.padding(12.dp)
+    ) {
+        FormInput(
+            insertKmrUiEvent = insertKmrUiState.insertKmrUiEvent,
+            onValueChange = onKamarValueChange,
+            modifier = Modifier.fillMaxWidth(),
+            idbangunanList = idbangunanList
+        )
+        Button(
+            onClick = onSavedClick,
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF42A5F5),
+                contentColor = Color.White)
+        ) {
+            Text(text = "Simpan")
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
