@@ -6,14 +6,19 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.a8_176.model.Bangunan
 import com.example.a8_176.repository.KamarRepository
 import com.example.a8_176.ui.view.kamar.DestinasiUpdateKmr
 import kotlinx.coroutines.launch
 
 class UpdateKamarViewModel(
     savedStateHandle: SavedStateHandle,
-    private val repositoryKamar: KamarRepository,
+    private val repositoryKamar: KamarRepository
 ) : ViewModel() {
+
+    // State untuk daftar bangunan
+    var idbangunanList by mutableStateOf<List<Bangunan>>(emptyList())
+        private set
 
     // State untuk data kamar
     var updateKmrUiState by mutableStateOf(InsertKmrUiState())
@@ -27,6 +32,17 @@ class UpdateKamarViewModel(
             try {
                 val kamar = repositoryKamar.getKamarbyId(_id_kamar)
                 updateKmrUiState = kamar.toKmrUiState()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        // Memuat data bangunan
+        viewModelScope.launch {
+            try {
+                val bangunanList = repositoryBangunan.getBangunan() // Harus List<Bangunan>
+                idbangunanList = bangunanList
+                updateKmrUiState = updateKmrUiState.copy(idbangunanList = bangunanList)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
