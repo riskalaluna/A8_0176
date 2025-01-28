@@ -29,22 +29,8 @@ import com.example.a8_176.ui.view.kamar.DetailKmrScreen
 import com.example.a8_176.ui.view.kamar.EntryKmrScreen
 import com.example.a8_176.ui.view.kamar.HomeKmrScreen
 import com.example.a8_176.ui.view.kamar.UpdateKmrScreen
-import com.example.a8_176.ui.view.mahasiswa.DestinasiDetailMhs
-import com.example.a8_176.ui.view.mahasiswa.DestinasiEntryMhs
 import com.example.a8_176.ui.view.mahasiswa.DestinasiHomeMhs
-import com.example.a8_176.ui.view.mahasiswa.DestinasiUpdateMhs
-import com.example.a8_176.ui.view.mahasiswa.DetailMhsScreen
-import com.example.a8_176.ui.view.mahasiswa.EntryMhsScreen
-import com.example.a8_176.ui.view.mahasiswa.HomeMhsScreen
-import com.example.a8_176.ui.view.mahasiswa.UpdateMhsScreen
-import com.example.a8_176.ui.view.pembayaransewa.DestinasiDetailPs
-import com.example.a8_176.ui.view.pembayaransewa.DestinasiEntryPs
 import com.example.a8_176.ui.view.pembayaransewa.DestinasiHomePs
-import com.example.a8_176.ui.view.pembayaransewa.DestinasiUpdatePs
-import com.example.a8_176.ui.view.pembayaransewa.DetailPsScreen
-import com.example.a8_176.ui.view.pembayaransewa.EntryPsScreen
-import com.example.a8_176.ui.view.pembayaransewa.HomePsScreen
-import com.example.a8_176.ui.view.pembayaransewa.UpdatePsScreen
 
 @Composable
 fun PengelolaHalaman(
@@ -59,14 +45,14 @@ fun PengelolaHalaman(
             route = DestinasiHomeUtama.route
         ) {
             HomeUtamaView(
-                onMahasiswa = {
-                    navController.navigate(DestinasiHomeMhs.route)
+                onBangunan = {
+                    navController.navigate(DestinasiHomeBgn.route)
                 },
                 onKamar = {
                     navController.navigate(DestinasiHomeKmr.route)
                 },
-                onBangunan = {
-                    navController.navigate(DestinasiHomeBgn.route)
+                onMahasiswa = {
+                    navController.navigate(DestinasiHomeMhs.route)
                 },
                 onPembayaranSewa = {
                     navController.navigate(DestinasiHomePs.route)
@@ -83,7 +69,10 @@ fun PengelolaHalaman(
                     println("PengelolaHalaman: id_bangunan $id_bangunan")
                 },
                 onBack = {
-                    navController.popBackStack()
+                    navController.navigate(DestinasiHomeUtama.route) {
+                        popUpTo(DestinasiHomeUtama.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
                 },
             )
         }
@@ -109,7 +98,10 @@ fun PengelolaHalaman(
                 DetailBgnScreen(
                     id_bangunan = id_bangunan,
                     onBackClick = {
-                        navController.navigate(DestinasiHomeBgn.route)
+                        navController.navigate(DestinasiHomeBgn.route) {
+                            popUpTo(DestinasiHomeBgn.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     },
                     onEditClick = {
                         navController.navigate("${DestinasiUpdateBgn.route}/$id_bangunan")
@@ -129,6 +121,71 @@ fun PengelolaHalaman(
                     onBack = {
                         navController.navigate(DestinasiHomeBgn.route) },
                     onNavigate = { navController.navigate(DestinasiHomeBgn.route) },
+                )
+            }
+        }
+
+        //KAMAR
+        composable(DestinasiHomeKmr.route) {
+            HomeKmrScreen(
+                navigateToItemEntry = { navController.navigate(DestinasiEntryKmr.route) },
+                onDetailClick = { id_kamar ->
+                    navController.navigate("${DestinasiDetailKmr.route}/$id_kamar")
+                    println("PengelolaHalaman: id_kamar $id_kamar")
+                },
+                onBack = {
+                    navController.navigate(DestinasiHomeUtama.route) {
+                        popUpTo(DestinasiHomeUtama.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+            )
+        }
+        composable(DestinasiEntryKmr.route) {
+            EntryKmrScreen(navigateBack = {
+                navController.navigate(DestinasiHomeKmr.route) {
+                    popUpTo(DestinasiHomeKmr.route) {
+                        inclusive = true
+                    }
+                }
+            })
+        }
+        composable(
+            DestinasiDetailKmr.routeWithArgs,
+            arguments = listOf(
+                navArgument(DestinasiDetailKmr.id_kamar) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val id_kamar = it.arguments?.getString(DestinasiDetailKmr.id_kamar)
+            id_kamar?.let { id_kamar ->
+                DetailKmrScreen(
+                    id_kamar = id_kamar,
+                    onBackClick = {
+                        navController.navigate(DestinasiHomeKmr.route) {
+                            popUpTo(DestinasiHomeKmr.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                    onEditClick = {
+                        navController.navigate("${DestinasiUpdateKmr.route}/$id_kamar")
+                    },
+                )
+            }
+        }
+        composable(
+            "${DestinasiUpdateKmr.route}/{id_kamar}",
+            arguments = listOf(
+                navArgument("id_kamar") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val id_kamar = backStackEntry.arguments?.getString("id_kamar")
+            id_kamar?.let { id_kamar ->
+                UpdateKmrScreen(
+                    onBack = {
+                        navController.navigate(DestinasiHomeKmr.route) },
+                    onNavigate = { navController.navigate(DestinasiHomeKmr.route) },
                 )
             }
         }
