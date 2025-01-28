@@ -14,6 +14,10 @@ import com.example.a8_176.ui.viewmodel.kamar.DetailKamarViewModel
 import com.example.a8_176.ui.viewmodel.kamar.HomeKamarViewModel
 import com.example.a8_176.ui.viewmodel.kamar.InsertKamarViewModel
 import com.example.a8_176.ui.viewmodel.kamar.UpdateKamarViewModel
+import com.example.a8_176.ui.viewmodel.mahasiswa.DetailMahasiswaViewModel
+import com.example.a8_176.ui.viewmodel.mahasiswa.HomeMahasiswaViewModel
+import com.example.a8_176.ui.viewmodel.mahasiswa.InsertMahasiswaViewModel
+import com.example.a8_176.ui.viewmodel.mahasiswa.UpdateMahasiswaViewModel
 
 object PenyediaViewModel{
     val Factory = viewModelFactory {
@@ -33,6 +37,18 @@ object PenyediaViewModel{
         initializer { UpdateKamarViewModel(createSavedStateHandle(),
             aplikasiKontak().container.kontakKmrRepository,
             aplikasiKontak().container.kontakBgnRepository
+        ) }
+
+        //Mahasiswa
+        initializer { HomeMahasiswaViewModel(aplikasiKontak().container.kontakMhsRepository) }
+        initializer { InsertMahasiswaViewModel(
+            aplikasiKontak().container.kontakMhsRepository,
+            aplikasiKontak().container.kontakKmrRepository
+        ) }
+        initializer { DetailMahasiswaViewModel(aplikasiKontak().container.kontakMhsRepository) }
+        initializer { UpdateMahasiswaViewModel(createSavedStateHandle(),
+            aplikasiKontak().container.kontakMhsRepository,
+            aplikasiKontak().container.kontakKmrRepository
         ) }
     }
 }
