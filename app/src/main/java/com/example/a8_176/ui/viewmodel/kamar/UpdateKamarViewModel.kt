@@ -33,4 +33,22 @@ class UpdateKamarViewModel(
         }
     }
 
+    // Memperbarui state berdasarkan input user
+    fun updateInsertKmrState(insertKmrUiEvent: InsertKmrUiEvent) {
+        updateKmrUiState = updateKmrUiState.copy(insertKmrUiEvent = insertKmrUiEvent)
+    }
+
+    // Fungsi untuk update kamar
+    fun updateKmr() {
+        viewModelScope.launch {
+            try {
+                repositoryKamar.updateKamar(
+                    _id_kamar,
+                    updateKmrUiState.insertKmrUiEvent.toKmr()
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }
