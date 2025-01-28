@@ -45,7 +45,62 @@ import com.example.a8_176.ui.navigation.DestinasiNavigasi
 import com.example.a8_176.ui.viewmodel.PenyediaViewModel
 import com.example.a8_176.ui.viewmodel.kamar.HomeKamarViewModel
 import com.example.a8_176.ui.viewmodel.pembayaransewa.HomePembayaranSewaViewModel
+
 import com.example.a8_176.ui.viewmodel.pembayaransewa.HomePsUiState
+
+object DestinasiHomePs : DestinasiNavigasi {
+    override val route = "homeps"
+    override val titleRes = "Home Pembayaran Sewa"
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomePsScreen(
+    navigateToItemEntry: () -> Unit,
+    modifier: Modifier = Modifier,
+    onDetailClick: (String) -> Unit = {},
+    onBack: () -> Unit = {},
+    viewModel: HomePembayaranSewaViewModel = viewModel(factory = PenyediaViewModel.Factory)
+) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    Scaffold (
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            CustumeTopAppBar(
+                title = DestinasiHomePs.titleRes,
+                canNavigateBack = true,
+                scrollBehavior = scrollBehavior,
+                modifier = modifier,
+                onRefresh = { viewModel.getPs()},
+                navigateUp = { onBack() },
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = navigateToItemEntry,
+                shape = MaterialTheme.shapes.medium,
+                containerColor = Color(0xFF42A5F5),
+                modifier = Modifier.padding(18.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Pembayaran Sewa",
+                    tint = Color.White
+                )
+            }
+        },
+    ){ innerPadding ->
+        HomeStatusPs(
+            homePsUiState = viewModel.psUIState,
+            retryAction = { viewModel.getPs() },
+            modifier = Modifier.padding(innerPadding),
+            onDetailClick = onDetailClick, onDeleteClick = {
+                viewModel.deletePs(it.id_pembayaran )
+                viewModel.getPs()
+            }
+        )
+    }
+}
 
 @Composable
 fun HomeStatusPs(
