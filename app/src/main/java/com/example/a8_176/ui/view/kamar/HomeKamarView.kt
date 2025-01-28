@@ -51,6 +51,11 @@ import com.example.a8_176.ui.viewmodel.PenyediaViewModel
 import com.example.a8_176.ui.viewmodel.kamar.HomeKamarViewModel
 import com.example.a8_176.ui.viewmodel.kamar.HomeKmrUiState
 
+object DestinasiHomeKmr : DestinasiNavigasi {
+    override val route = "homekmr"
+    override val titleRes = "Home Kamar"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeKmrScreen(
