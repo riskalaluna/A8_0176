@@ -29,8 +29,22 @@ import com.example.a8_176.ui.view.kamar.DetailKmrScreen
 import com.example.a8_176.ui.view.kamar.EntryKmrScreen
 import com.example.a8_176.ui.view.kamar.HomeKmrScreen
 import com.example.a8_176.ui.view.kamar.UpdateKmrScreen
+import com.example.a8_176.ui.view.mahasiswa.DestinasiDetailMhs
+import com.example.a8_176.ui.view.mahasiswa.DestinasiEntryMhs
 import com.example.a8_176.ui.view.mahasiswa.DestinasiHomeMhs
+import com.example.a8_176.ui.view.mahasiswa.DestinasiUpdateMhs
+import com.example.a8_176.ui.view.mahasiswa.DetailMhsScreen
+import com.example.a8_176.ui.view.mahasiswa.EntryMhsScreen
+import com.example.a8_176.ui.view.mahasiswa.HomeMhsScreen
+import com.example.a8_176.ui.view.mahasiswa.UpdateMhsScreen
+import com.example.a8_176.ui.view.pembayaransewa.DestinasiDetailPs
+import com.example.a8_176.ui.view.pembayaransewa.DestinasiEntryPs
 import com.example.a8_176.ui.view.pembayaransewa.DestinasiHomePs
+import com.example.a8_176.ui.view.pembayaransewa.DestinasiUpdatePs
+import com.example.a8_176.ui.view.pembayaransewa.DetailPsScreen
+import com.example.a8_176.ui.view.pembayaransewa.EntryPsScreen
+import com.example.a8_176.ui.view.pembayaransewa.HomePsScreen
+import com.example.a8_176.ui.view.pembayaransewa.UpdatePsScreen
 
 @Composable
 fun PengelolaHalaman(
@@ -186,6 +200,136 @@ fun PengelolaHalaman(
                     onBack = {
                         navController.navigate(DestinasiHomeKmr.route) },
                     onNavigate = { navController.navigate(DestinasiHomeKmr.route) },
+                )
+            }
+        }
+
+        //MAHASISWA
+        composable(DestinasiHomeMhs.route) {
+            HomeMhsScreen(
+                navigateToItemEntry = { navController.navigate(DestinasiEntryMhs.route) },
+                onDetailClick = { id_mahasiswa ->
+                    navController.navigate("${DestinasiDetailMhs.route}/$id_mahasiswa")
+                    println("PengelolaHalaman: id_mahasiswa $id_mahasiswa")
+                },
+                onBack = {
+                    navController.navigate(DestinasiHomeUtama.route) {
+                        popUpTo(DestinasiHomeUtama.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+            )
+        }
+        composable(DestinasiEntryMhs.route) {
+            EntryMhsScreen(navigateBack = {
+                navController.navigate(DestinasiHomeMhs.route) {
+                    popUpTo(DestinasiHomeMhs.route) {
+                        inclusive = true
+                    }
+                }
+            })
+        }
+        composable(
+            DestinasiDetailMhs.routeWithArgs,
+            arguments = listOf(
+                navArgument(DestinasiDetailMhs.id_mahasiswa) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val id_mahasiswa = it.arguments?.getString(DestinasiDetailMhs.id_mahasiswa)
+            id_mahasiswa?.let { id_mahasiswa ->
+                DetailMhsScreen(
+                    id_mahasiswa = id_mahasiswa,
+                    onBackClick = {
+                        navController.navigate(DestinasiHomeMhs.route) {
+                            popUpTo(DestinasiHomeMhs.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                    onEditClick = {
+                        navController.navigate("${DestinasiUpdateMhs.route}/$id_mahasiswa")
+                    },
+                )
+            }
+        }
+        composable(
+            "${DestinasiUpdateMhs.route}/{id_mahasiswa}",
+            arguments = listOf(
+                navArgument("id_mahasiswa") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val id_mahasiswa = backStackEntry.arguments?.getString("id_mahasiswa")
+            id_mahasiswa?.let { id_mahasiswa ->
+                UpdateMhsScreen(
+                    onBack = {
+                        navController.navigate(DestinasiHomeMhs.route) },
+                    onNavigate = { navController.navigate(DestinasiHomeMhs.route) },
+                )
+            }
+        }
+
+        //PEMBAYARANSEWA
+        composable(DestinasiHomePs.route) {
+            HomePsScreen(
+                navigateToItemEntry = { navController.navigate(DestinasiEntryPs.route) },
+                onDetailClick = { id_pembayaran ->
+                    navController.navigate("${DestinasiDetailPs.route}/$id_pembayaran")
+                    println("PengelolaHalaman: id_pembayaran $id_pembayaran")
+                },
+                onBack = {
+                    navController.navigate(DestinasiHomeUtama.route) {
+                        popUpTo(DestinasiHomeUtama.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+            )
+        }
+        composable(DestinasiEntryPs.route) {
+            EntryPsScreen(navigateBack = {
+                navController.navigate(DestinasiHomePs.route) {
+                    popUpTo(DestinasiHomePs.route) {
+                        inclusive = true
+                    }
+                }
+            })
+        }
+        composable(
+            DestinasiDetailPs.routeWithArgs,
+            arguments = listOf(
+                navArgument(DestinasiDetailPs.id_pembayaran) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val id_pembayaran = it.arguments?.getString(DestinasiDetailPs.id_pembayaran)
+            id_pembayaran?.let { id_pembayaran ->
+                DetailPsScreen(
+                    id_pembayaran = id_pembayaran,
+                    onBackClick = {
+                        navController.navigate(DestinasiHomePs.route) {
+                            popUpTo(DestinasiHomePs.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                    onEditClick = {
+                        navController.navigate("${DestinasiUpdatePs.route}/$id_pembayaran")
+                    },
+                )
+            }
+        }
+        composable(
+            "${DestinasiUpdatePs.route}/{id_pembayaran}",
+            arguments = listOf(
+                navArgument("id_pembayaran") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val id_pembayaran = backStackEntry.arguments?.getString("id_pembayaran")
+            id_pembayaran?.let { id_pembayaran ->
+                UpdatePsScreen(
+                    onBack = {
+                        navController.navigate(DestinasiHomePs.route) },
+                    onNavigate = { navController.navigate(DestinasiHomePs.route) },
                 )
             }
         }
