@@ -37,9 +37,57 @@ import com.example.a8_176.model.Mahasiswa
 import com.example.a8_176.ui.custumwidget.CustumeTopAppBar
 import com.example.a8_176.ui.custumwidget.DatePickerFields
 import com.example.a8_176.ui.custumwidget.DropDownAsrama
+import com.example.a8_176.ui.navigation.DestinasiNavigasi
+import com.example.a8_176.ui.viewmodel.PenyediaViewModel
+import com.example.a8_176.ui.viewmodel.pembayaransewa.InsertPembayaranSewaViewModel
 import com.example.a8_176.ui.viewmodel.pembayaransewa.InsertPsUiEvent
 import com.example.a8_176.ui.viewmodel.pembayaransewa.InsertPsUiState
 import kotlinx.coroutines.launch
+
+object DestinasiEntryPs : DestinasiNavigasi {
+    override val route = "item_entry_ps"
+    override val titleRes = "Tambah Pembayaran Sewa"
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EntryPsScreen(
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: InsertPembayaranSewaViewModel = viewModel(factory = PenyediaViewModel.Factory)
+) {
+    val uiStatePembayaranSewa = viewModel.uiStatePembayaranSewa
+    val coroutineScope = rememberCoroutineScope()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    Scaffold (
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            CustumeTopAppBar(
+                title = DestinasiEntryPs.titleRes,
+                canNavigateBack = true,
+                scrollBehavior = scrollBehavior,
+                navigateUp = navigateBack
+            )
+        }
+    ) { innerPadding ->
+        EntryBodyPs(
+            uiState = uiStatePembayaranSewa,
+            idmahasiswaList = uiStatePembayaranSewa.idmahasiswaList,
+            insertPsUiState = viewModel.uiStatePembayaranSewa,
+            onValueChange = viewModel::updateInsertPsState,
+            onSavedClick = {
+                coroutineScope.launch {
+                    viewModel.insertPs()
+                    navigateBack()
+                }
+            },
+            modifier = Modifier
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
+        )
+    }
+}
 
 @Composable
 fun EntryBodyPs(
