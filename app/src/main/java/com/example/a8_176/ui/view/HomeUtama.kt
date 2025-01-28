@@ -71,12 +71,13 @@ fun HomeUtamaView(
                 Text(
                     text = "Asrama Universitas Muhammadiyah Yogyakarta",
                     color = Color.Black,
-                    fontSize = 20.sp,
+                    fontSize = 23.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = "Bersih dan Nyaman",
                     color = Color.Black,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -121,14 +122,14 @@ fun HomeUtamaView(
                 )
                 Button(
                     onClick = {
-                        onMahasiswa()
+                        onBangunan()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp),
                     colors = ButtonDefaults.buttonColors(Color(0xFF2196F3))
                 ) {
-                    Text(text = "Mahasiswa")
+                    Text(text = "Bangunan")
                 }
                 Spacer(modifier = Modifier.padding(16.dp))
                 Button(
@@ -145,14 +146,14 @@ fun HomeUtamaView(
                 Spacer(modifier = Modifier.padding(16.dp))
                 Button(
                     onClick = {
-                        onBangunan()
+                        onMahasiswa()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp),
                     colors = ButtonDefaults.buttonColors(Color(0xFF2196F3))
                 ) {
-                    Text(text = "Bangunan")
+                    Text(text = "Mahasiswa")
                 }
                 Spacer(modifier = Modifier.padding(16.dp))
                 Button(
