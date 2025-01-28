@@ -40,6 +40,96 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a8_176.model.PembayaranSewa
+import com.example.a8_176.ui.custumwidget.CustumeTopAppBar
+import com.example.a8_176.ui.navigation.DestinasiNavigasi
+import com.example.a8_176.ui.viewmodel.PenyediaViewModel
+import com.example.a8_176.ui.viewmodel.kamar.HomeKamarViewModel
+import com.example.a8_176.ui.viewmodel.pembayaransewa.HomePembayaranSewaViewModel
+import com.example.a8_176.ui.viewmodel.pembayaransewa.HomePsUiState
+
+@Composable
+fun HomeStatusPs(
+    homePsUiState: HomePsUiState,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier,
+    onDeleteClick: (PembayaranSewa) -> Unit = {},
+    onDetailClick: (String) -> Unit
+){
+    when(homePsUiState) {
+        is HomePsUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
+
+        is HomePsUiState.Succsess ->
+            if (homePsUiState.pembayaran.isEmpty()) {
+                return Box (
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(text = "Tidak ada data Kontak")
+                }
+            } else {
+                PsLayout(
+                    pembayaranSewa = homePsUiState.pembayaran, modifier = modifier.fillMaxWidth(),
+                    onDetailClick = {
+                        onDetailClick(it.id_pembayaran)
+                    },
+                    onDeleteClick = {
+                        onDeleteClick(it)
+                    }
+                )
+            }
+        is HomePsUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
+    }
+}
+
+@Composable
+fun OnLoading(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        androidx.compose.material3.CircularProgressIndicator(
+            modifier = Modifier.size(48.dp)
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        Text(
+            text = "Loading...",
+            style = MaterialTheme.typography.titleMedium
+        )
+    }
+}
+
+@Composable
+fun OnError(
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        androidx.compose.material3.Icon(
+            imageVector = Icons.Default.Refresh,
+            contentDescription = "Error Icon",
+            modifier = Modifier.size(48.dp),
+            tint = MaterialTheme.colorScheme.error
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        Text(
+            text = "Failed to load data. Please try again.",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.padding(16.dp)
+        )
+        Button(onClick = retryAction) {
+            Text("Retry")
+        }
+    }
+}
+
 
 @Composable
 fun PsLayout(
