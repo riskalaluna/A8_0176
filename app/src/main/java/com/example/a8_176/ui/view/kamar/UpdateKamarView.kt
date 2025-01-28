@@ -19,6 +19,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+object DestinasiUpdateKmr: DestinasiNavigasi {
+    override val route = "updatekmr"
+    override val titleRes = "Update Data Kamar"
+    const val id_kamar = "id_kamar"
+    val routesWithArg = "$route/{$id_kamar}"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateKmrScreen(
