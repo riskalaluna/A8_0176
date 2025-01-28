@@ -44,7 +44,62 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a8_176.R
 import com.example.a8_176.model.Kamar
+import com.example.a8_176.model.Mahasiswa
+import com.example.a8_176.ui.custumwidget.CustumeTopAppBar
+import com.example.a8_176.ui.navigation.DestinasiNavigasi
+import com.example.a8_176.ui.viewmodel.PenyediaViewModel
+import com.example.a8_176.ui.viewmodel.kamar.HomeKamarViewModel
 import com.example.a8_176.ui.viewmodel.kamar.HomeKmrUiState
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeKmrScreen(
+    navigateToItemEntry: () -> Unit,
+    modifier: Modifier = Modifier,
+    onDetailClick: (String) -> Unit = {},
+    onBack: () -> Unit = {},
+    viewModel: HomeKamarViewModel = viewModel(factory = PenyediaViewModel.Factory)
+) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    Scaffold (
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            CustumeTopAppBar(
+                title = DestinasiHomeKmr.titleRes,
+                canNavigateBack = true,
+                scrollBehavior = scrollBehavior,
+                modifier = modifier,
+                onRefresh = {
+                    viewModel.getKmr()},
+                navigateUp = { onBack() },
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = navigateToItemEntry,
+                shape = MaterialTheme.shapes.medium,
+                containerColor = Color(0xFF42A5F5),
+                modifier = Modifier.padding(18.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Kamar",
+                    tint = Color.White
+                )
+            }
+        },
+    ){ innerPadding ->
+        HomeStatusKmr(
+            homeKmrUiState = viewModel.kmrUIState,
+            retryAction = { viewModel.getKmr() },
+            modifier = Modifier.padding(innerPadding),
+            onDetailClick = onDetailClick, onDeleteClick = {
+                viewModel.deleteKmr(it.id_kamar )
+                viewModel.getKmr()
+            }
+        )
+    }
+}
 
 @Composable
 fun HomeStatusKmr(
