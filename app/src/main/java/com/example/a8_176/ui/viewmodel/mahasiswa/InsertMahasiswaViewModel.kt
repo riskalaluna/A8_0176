@@ -1,7 +1,51 @@
 package com.example.a8_176.ui.viewmodel.mahasiswa
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.a8_176.model.Kamar
 import com.example.a8_176.model.Mahasiswa
+import com.example.a8_176.repository.KamarRepository
+import com.example.a8_176.repository.MahasiswaRepository
+import kotlinx.coroutines.launch
+
+class InsertMahasiswaViewModel(
+    private val mhs: MahasiswaRepository,
+    private val kmr: KamarRepository //mengambil KamarRepository (salah commit file)
+): ViewModel() {
+    var uiStateMhs by mutableStateOf(InsertMhsUiState())
+        private set
+
+    fun updateInsertMhsState(insertMhsUiEvent: InsertMhsUiEvent) {
+        uiStateMhs = uiStateMhs.copy(insertMhsUiEvent = insertMhsUiEvent)
+    }
+    init {
+        loadKamar()
+    }
+
+    private fun loadKamar() {
+        viewModelScope.launch {
+            try {
+                val kamarList = kmr.getKamar()
+                uiStateMhs = uiStateMhs.copy(idkamarList = kamarList)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun insertMhs() {
+        viewModelScope.launch {
+            try {
+                mhs.insertMahasiswa(uiStateMhs.insertMhsUiEvent.toMhs())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+}
 
 data class InsertMhsUiState(
     val insertMhsUiEvent: InsertMhsUiEvent = InsertMhsUiEvent(),
