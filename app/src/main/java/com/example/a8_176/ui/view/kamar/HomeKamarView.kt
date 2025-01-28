@@ -44,6 +44,41 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a8_176.R
 import com.example.a8_176.model.Kamar
+import com.example.a8_176.ui.viewmodel.kamar.HomeKmrUiState
+
+@Composable
+fun HomeStatusKmr(
+    homeKmrUiState: HomeKmrUiState,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier,
+    onDeleteClick: (Kamar) -> Unit = {},
+    onDetailClick: (String) -> Unit
+){
+    when(homeKmrUiState) {
+        is HomeKmrUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
+
+        is HomeKmrUiState.Succsess ->
+            if (homeKmrUiState.kamar.isEmpty()) {
+                return Box (
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(text = "Tidak ada data Kontak")
+                }
+            } else {
+                KmrLayout(
+                    kamar = homeKmrUiState.kamar, modifier = modifier.fillMaxWidth(),
+                    onDetailClick = {
+                        onDetailClick(it.id_kamar)
+                    },
+                    onDeleteClick = {
+                        onDeleteClick(it)
+                    }
+                )
+            }
+        is HomeKmrUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
+    }
+}
 
 @Composable
 fun OnLoading(
