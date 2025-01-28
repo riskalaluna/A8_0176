@@ -35,12 +35,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a8_176.R
 import com.example.a8_176.model.Kamar
+
+@Composable
+fun OnLoading(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        androidx.compose.material3.CircularProgressIndicator(
+            modifier = Modifier.size(48.dp)
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        Text(
+            text = "Loading...",
+            style = MaterialTheme.typography.titleMedium
+        )
+    }
+}
 
 @Composable
 fun OnError(
