@@ -10,6 +10,10 @@ import com.example.a8_176.ui.viewmodel.bangunan.DetailBangunanViewModel
 import com.example.a8_176.ui.viewmodel.bangunan.HomeBangunanViewModel
 import com.example.a8_176.ui.viewmodel.bangunan.InsertBangunanViewModel
 import com.example.a8_176.ui.viewmodel.bangunan.UpdateBangunanViewModel
+import com.example.a8_176.ui.viewmodel.kamar.DetailKamarViewModel
+import com.example.a8_176.ui.viewmodel.kamar.HomeKamarViewModel
+import com.example.a8_176.ui.viewmodel.kamar.InsertKamarViewModel
+import com.example.a8_176.ui.viewmodel.kamar.UpdateKamarViewModel
 
 object PenyediaViewModel{
     val Factory = viewModelFactory {
@@ -18,6 +22,18 @@ object PenyediaViewModel{
         initializer { InsertBangunanViewModel(aplikasiKontak().container.kontakBgnRepository) }
         initializer { DetailBangunanViewModel(aplikasiKontak().container.kontakBgnRepository) }
         initializer { UpdateBangunanViewModel(createSavedStateHandle(),aplikasiKontak().container.kontakBgnRepository) }
+
+        //kamar
+        initializer { HomeKamarViewModel(aplikasiKontak().container.kontakKmrRepository) }
+        initializer { InsertKamarViewModel(
+            aplikasiKontak().container.kontakKmrRepository,
+            aplikasiKontak().container.kontakBgnRepository
+        ) }
+        initializer { DetailKamarViewModel(aplikasiKontak().container.kontakKmrRepository) }
+        initializer { UpdateKamarViewModel(createSavedStateHandle(),
+            aplikasiKontak().container.kontakKmrRepository,
+            aplikasiKontak().container.kontakBgnRepository
+        ) }
     }
 }
 fun CreationExtras.aplikasiKontak(): AsramaApplications =
