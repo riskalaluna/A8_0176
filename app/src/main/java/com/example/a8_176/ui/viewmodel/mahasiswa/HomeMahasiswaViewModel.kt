@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import coil.network.HttpException
 import com.example.a8_176.model.Mahasiswa
 import com.example.a8_176.repository.MahasiswaRepository
+import com.example.a8_176.ui.viewmodel.kamar.HomeKmrUiState
 import kotlinx.coroutines.launch
 import okio.IOException
 
@@ -17,7 +18,9 @@ sealed class HomeUiState{
     object Loading : HomeUiState()
 }
 
-class HomeMahasiswaViewModel(private val mhs: MahasiswaRepository): ViewModel() {
+class HomeMahasiswaViewModel(
+    private val mhs: MahasiswaRepository
+): ViewModel() {
     var mhsUIState: HomeUiState by mutableStateOf(HomeUiState.Loading)
         private set
     var isRefreshing by mutableStateOf(false)
@@ -52,13 +55,10 @@ class HomeMahasiswaViewModel(private val mhs: MahasiswaRepository): ViewModel() 
         viewModelScope.launch {
             try {
                 mhs.deleteMahasiswa(id_mahasiswa)
-                snackbarMessage = "Mahasiswa berhasil dihapus"
             } catch (e: IOException) {
-                snackbarMessage = "Network error: ${e.message}"
-                mhsUIState = HomeUiState.Error
+                HomeKmrUiState.Error
             } catch (e: HttpException) {
-                snackbarMessage = "HTTP error: ${e.message}"
-                mhsUIState = HomeUiState.Error
+                HomeKmrUiState.Error
             }
         }
     }
